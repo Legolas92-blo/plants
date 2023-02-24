@@ -4,28 +4,28 @@
 const hamburger = document.querySelector(".hamburger");
 const headerMenu = document.querySelector(".header__items");
 const shadowMenu = document.querySelector(".shadow-open-menu");
-const header = document.querySelector(".header");
+const body = document.body;
 
 
 hamburger.addEventListener("click", () => {
 	hamburger.classList.toggle("active");
 	headerMenu.classList.toggle("active");
 	shadowMenu.classList.toggle("active");
+	body.classList.toggle("hidden");
 })
 
 document.querySelectorAll(".header__link").forEach(n => n.addEventListener("click", () => {
 	hamburger.classList.remove("active");
 	headerMenu.classList.remove("active");
 	shadowMenu.classList.remove("active");
+	body.classList.remove("hidden");
 }))
 
-shadowMenu.addEventListener('click', (event) => {
-	const target = event.target;
-	console.log(target);
+shadowMenu.addEventListener('click', () => {
 	shadowMenu.classList.remove("active");
 	hamburger.classList.toggle("active");
 	headerMenu.classList.toggle("active");
-
+	body.classList.remove("hidden");
 })
 
 
@@ -50,9 +50,9 @@ function removeBlur() {
 	})
 }
 
+
 let arrCountActiveBtn = [];
 
-console.log('hi')
 // ----- event for gardens btn -------------------------
 gardensServiceBtn.addEventListener('click', () => {  // gardens btn click
 	if (gardensServiceBtn.classList.contains('activeBtnService')) {
@@ -141,7 +141,7 @@ const plantingItemsDeleteBlur = () => {
 		el.classList.remove('blur__block');
 	})
 }
-console.log(parentServiceBtn);
+
 
 document.addEventListener('click', (e) => {
 	const withinBoundaries = e.composedPath().includes(parentServiceBtn);
@@ -168,9 +168,7 @@ accordionItem.forEach(item => {
 		let content = item.nextElementSibling;
 
 		if (content.classList.contains('active-accordion-item')) {
-			console.log(item)
 			item.classList.remove('open__dropdown');
-
 
 			contentAccordion.forEach(el => {
 				el.classList.remove('active-accordion-item');
@@ -222,26 +220,30 @@ document.addEventListener('click', (e) => {
 
 // !contacts
 const selectContainer = document.querySelector('.contacts__select');
-const selectHeader = document.querySelectorAll('.contacts__select-header');
+const selectHeader = document.querySelector('.contacts__select-header');
 const selectItem = document.querySelectorAll('.contacts__select-item');
-const arrSelectItem = [...selectItem];
-const adressesContainer = document.querySelector('.contacts__select-adresses');
-const adressesContainerChildren = adressesContainer.children;
-console.log(typeof adressesContainerChildren)
+const addressesContainer = document.querySelector('.contacts__select-addresses');
+const addressesContainerChildren = addressesContainer.children;
+const contactsArrowIcon = document.querySelector(".contacts__select-arrow");
+const iconArrowOpen = './img/icon/open_accordion_btnsvg.svg';
+const iconArrowClosed = './img/icon/contact-block__arrow-list-city.svg';
 
-function removeAdressesContainerChildrenActive() {
-	[...adressesContainerChildren].forEach(el => {
+function removeAddressesContainerChildrenActive() {
+	[...addressesContainerChildren].forEach(el => {
 		el.classList.remove('active-select-item-block');
 	})
 }
 
-selectHeader.forEach(el => {
-	el.addEventListener('click', function () {
-		removeAdressesContainerChildrenActive();
-		this.parentElement.classList.toggle('active__select');
-	})
+selectHeader.addEventListener('click', function () {
+	removeAddressesContainerChildrenActive();
+	if (!this.parentElement.classList.contains('active__select')) {
+		this.parentElement.classList.add('active__select');
+		contactsArrowIcon.src = iconArrowOpen;
+	} else {
+		this.parentElement.classList.remove('active__select');
+		contactsArrowIcon.src = iconArrowClosed;
+	}
 })
-
 
 
 selectItem.forEach(el => {
@@ -253,21 +255,19 @@ selectItem.forEach(el => {
 
 		currentText.innerText = text;
 		select.classList.remove('active__select');
-		//----------------------- new code --------------
 
-		// adressesContainer.classList.add('active-select-item-block');
 		if (ev.target.textContent === 'Canandaigua, NY') {
-			removeAdressesContainerChildrenActive();
-			adressesContainerChildren[0].classList.add('active-select-item-block');
+			removeAddressesContainerChildrenActive();
+			addressesContainerChildren[0].classList.add('active-select-item-block');
 		} else if (ev.target.textContent === 'New York City') {
-			removeAdressesContainerChildrenActive();
-			adressesContainerChildren[1].classList.add('active-select-item-block');
+			removeAddressesContainerChildrenActive();
+			addressesContainerChildren[1].classList.add('active-select-item-block');
 		} else if (ev.target.textContent === 'Yonkers, NY') {
-			removeAdressesContainerChildrenActive();
-			adressesContainerChildren[2].classList.add('active-select-item-block');
+			removeAddressesContainerChildrenActive();
+			addressesContainerChildren[2].classList.add('active-select-item-block');
 		} else if (ev.target.textContent === 'Sherrill, NY') {
-			removeAdressesContainerChildrenActive();
-			adressesContainerChildren[3].classList.add('active-select-item-block');
+			removeAddressesContainerChildrenActive();
+			addressesContainerChildren[3].classList.add('active-select-item-block');
 		}
 
 	})
@@ -279,6 +279,7 @@ document.addEventListener('click', (e) => {
 		selectContainer.classList.remove('active__select');
 	}
 })
+
 
 
 
